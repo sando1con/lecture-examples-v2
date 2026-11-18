@@ -6,11 +6,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "order_items")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderItem {
+public class    OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,16 +21,19 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private Long productId;
+    private String productName;
+    private BigDecimal price;
 
     @Column(nullable = false)
     private Integer quantity;
 
-    public static OrderItem create(Product product, int quantity) {
+    // 맞는지 모르겠지만 이름과 가격 추가
+    public static OrderItem create(Long productId, String productName,BigDecimal price, int quantity) {
         OrderItem orderItem = new OrderItem();
-        orderItem.product = product;
+        orderItem.productId = productId;
+        orderItem.productName = productName;
+        orderItem.price = price;
         orderItem.quantity = quantity;
 
         return orderItem;
